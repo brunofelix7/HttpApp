@@ -1,9 +1,13 @@
 package com.example.httpapp.model;
 
-public class User {
+import com.orm.SugarRecord;
 
-    private Integer id;
+public class User extends SugarRecord<User> {
+
+    private Long id;
     private String name;
+    private String login;
+    private String password;
     private String username;
     private String email;
     private String phone;
@@ -11,16 +15,53 @@ public class User {
     private Company company;
     private Address address;
 
-    public Integer getId() {
+    public User(){
+
+    }
+
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
+
+    public User(String name, String login, String password, String username, String email, String phone, String website, Company company, Address address) {
+        this.name = name;
+        this.login = login;
+        this.password = password;
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+        this.website = website;
+        this.company = company;
+        this.address = address;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setName(String name) {

@@ -10,11 +10,19 @@ import android.widget.Toast;
 
 import com.example.httpapp.R;
 import com.example.httpapp.core.Constants;
+import com.example.httpapp.model.Root;
 import com.example.httpapp.model.User;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.androidannotations.annotations.ViewById;
+
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -35,8 +43,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         tv_data = (TextView) findViewById(R.id.tv_data);
-        new ExampleOkHttp().execute();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getData();
+            }
+        }).start();
+
+        User user = new User("bK", "12345");
+        user.save();
     }
 
     public void loadUserFromJSON(View v) {
@@ -56,46 +74,53 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, userJSONString.toString(), Toast.LENGTH_LONG).show();
     }
 
-    private class ExampleOkHttp extends AsyncTask<Void, Void, Response> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            URL url = null;
-            try {
-                url = new URL(Constants.BASE_URL);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-
-            okHttpClient = new OkHttpClient();
-            request = new Request.Builder()
-                    .url(url)
-                    .build();
-        }
-        @Override
-        protected Response doInBackground(Void... params) {
-            try {
-                response = okHttpClient.newCall(request).execute();
-                return response;
-            }catch (IOException e){
-                return null;
-            }
-        }
-        @Override
-        protected void onPostExecute(Response response) {
+    private void getData(){
+        okHttpClient = new OkHttpClient();
+        request = new Request.Builder()
+                .url(Constants.BASE_URL)
+                .build();
+        try {
+            response = okHttpClient.newCall(request).execute();
             if (response.code() == 200){
                 try {
-                    Log.i("AppTest", response.body().string());
+                    json = response.body().string();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }else{
                 response.message();
             }
-            Toast.makeText(MainActivity.this, json, Toast.LENGTH_LONG).show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //Gson gson = new Gson();
+                    //Type listType = new TypeToken<ArrayList<Root>>(){}.getType();
+                    //List<Root> users = gson.fromJson(json, new TypeToken<List<Root>>(){}.getType());
+                    Log.d("AppTest", json);
+                    //Toast.makeText(MainActivity.this, json, Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
+
+    /*private class ExampleOkHttp extends AsyncTask<Void, Void, Response> {
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+        @Override
+        protected Response doInBackground(Void... params) {
+
+        }
+        @Override
+        protected void onPostExecute(Response response) {
+
+        }
+
+    }*/
 
 }

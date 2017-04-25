@@ -2,16 +2,9 @@ package com.example.httpapp.core;
 
 public class ServerResponse {
 
-    private String status;
     private String token;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    private String status;
+    private String message;
 
     public String getToken() {
         return token;
@@ -21,8 +14,19 @@ public class ServerResponse {
         this.token = token;
     }
 
-    public String toString() {
-        return status + " - " + token;
+    public String getStatus() {
+        return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

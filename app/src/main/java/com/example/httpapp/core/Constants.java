@@ -8,5 +8,7 @@ public class Constants {
     public static final String URL_SERVICE3 = "http://www.eukip.com/aulas/UserAuth/Home/GetAuth?login=user123&senha=123senha";
     public static final String URL_SERVICE4 = "http://www.eukip.com/aulas/UserAuth/Home/PostAuth";
     public static final String BASE_URL = "https://jsonplaceholder.typicode.com/users";
+    public static final String BASE_URL_2 = "http://localhost:8080/login";
+    public static final String BASE_URL_3 = "http://pokeapi.co/api/v2/pokemon";
 
 }
